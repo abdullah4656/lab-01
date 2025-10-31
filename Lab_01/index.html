@@ -870,65 +870,65 @@
     </div>
   </footer>
 
-  <script>
-    // Cursor effect
-    const cursor = document.getElementById("cursor-circle");
-    document.addEventListener("mousemove", e => {
-      cursor.style.left = e.clientX + "px";
-      cursor.style.top = e.clientY + "px";
-    });
-    
-    // Mobile menu toggle
-    const mobileToggle = document.querySelector('.mobile-toggle');
-    const navMenu = document.querySelector('nav ul');
-    
-    mobileToggle.addEventListener('click', () => {
-      navMenu.classList.toggle('active');
-    });
-    
-    // Close menu when clicking on a link
-    const navLinks = document.querySelectorAll('nav a');
-    navLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
+    <script>
+      // Cursor effect
+      const cursor = document.getElementById("cursor-circle");
+      document.addEventListener("mousemove", e => {
+        cursor.style.left = e.clientX + "px";
+        cursor.style.top = e.clientY + "px";
       });
-    });
-    
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        const targetId = this.getAttribute('href');
-        if(targetId === '#') return;
-        
-        const targetElement = document.querySelector(targetId);
-        if(targetElement) {
-          window.scrollTo({
-            top: targetElement.offsetTop - 80,
-            behavior: 'smooth'
-          });
-        }
+      
+      // Mobile menu toggle
+      const mobileToggle = document.querySelector('.mobile-toggle');
+      const navMenu = document.querySelector('nav ul');
+      
+      mobileToggle.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
       });
-    });
-    
+      
+      // Close menu when clicking on a link
+      const navLinks = document.querySelectorAll('nav a');
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          navMenu.classList.remove('active');
+        });
+      });
+      
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          const targetId = this.getAttribute('href');
+          if(targetId === '#') return;
+          
+          const targetElement = document.querySelector(targetId);
+          if(targetElement) {
+            window.scrollTo({
+              top: targetElement.offsetTop - 80,
+              behavior: 'smooth'
+            });
+          }
+        });
+      });
+      
 
-    
-  </script>
-  <script>
-  document.querySelectorAll('.btn-small').forEach(button => {
-    button.addEventListener('click', e => {
-      const productData = {
-        title: button.dataset.title,
-        price: button.dataset.price,
-        image: button.dataset.image,
-        desc: button.dataset.desc
-      };
-      // Save product info to localStorage
-      localStorage.setItem('checkoutProduct', JSON.stringify(productData));
+      
+    </script>
+    <script>
+    document.querySelectorAll('.btn-small').forEach(button => {
+      button.addEventListener('click', e => {
+        const productData = {
+          title: button.dataset.title,
+          price: button.dataset.price,
+          image: button.dataset.image,
+          desc: button.dataset.desc
+        };
+        // Save product info to localStorage
+        localStorage.setItem('checkoutProduct', JSON.stringify(productData));
+      });
     });
-  });
-</script>
+  </script>
 
 
 </body>

@@ -164,7 +164,7 @@ $(document).ready(function() {
     if ($("#expiry").val().trim() === "") showError("expiry", "Expiry date is required");
     if ($("#cvv").val().trim() === "") showError("cvv", "CVV is required");
 
-    // If all fields valid
+  
     if (valid) {
       alert("Form submitted successfully!");
       this.reset();
@@ -176,10 +176,10 @@ $(document).ready(function() {
   const productData = JSON.parse(localStorage.getItem('checkoutProduct'));
 
   if (productData) {
-    // Find the list inside Order Summary
+
     const list = document.querySelector('.card-body .list-group');
 
-    // Create a new list item for the selected product
+    
     const li = document.createElement('li');
     li.className = 'list-group-item d-flex justify-content-between align-items-center';
     li.innerHTML = `
@@ -191,7 +191,7 @@ $(document).ready(function() {
       <span class="fw-bold text-success">${productData.price}</span>
     `;
 
-    // Insert product at the top of the order summary list
+  
     list.insertBefore(li, list.firstChild);
   }
 </script>
