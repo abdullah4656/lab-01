@@ -1,0 +1,221 @@
+<%- include('partials/header') %>
+<style>
+    .cart-item {
+        transition: all 0.3s ease;
+    }
+    .cart-item:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .quantity-control {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .quantity-btn {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        border: 1px solid #dee2e6;
+        background: white;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .quantity-btn:hover {
+        background: #0d6efd;
+        color: white;
+        border-color: #0d6efd;
+    }
+    .empty-cart {
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4"><i class="bi bi-cart3"></i> Shopping Cart</h1>
+    </div>
+</div>
+
+<% if (cart.items && cart.items.length > 0) { %>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <% cart.items.forEach(item => { %>
+                        <div class="cart-item p-3 mb-3 border rounded" data-product-id="<%= item.product._id %>">
+                            <div class="row align-items-center">
+                                <div class="col-md-2 col-3">
+                                    <img src="<%= item.product.image %>" class="img-fluid rounded" alt="<%= item.product.name %>">
+                                </div>
+                                <div class="col-md-4 col-9">
+                                    <h5 class="mb-1"><%= item.product.name %></h5>
+                                    <p class="text-muted mb-0"><small><%= item.product.category %></small></p>
+                                    <p class="text-primary mb-0 fw-bold">$<%= item.product.price.toFixed(2) %></p>
+                                </div>
+                                <div class="col-md-3 col-6 mt-3 mt-md-0">
+                                    <div class="quantity-control">
+                                        <button class="quantity-btn decrease-qty" data-product-id="<%= item.product._id %>">-</button>
+                                        <input type="number" class="form-control text-center quantity-input" value="<%= item.quantity %>" min="1" max="<%= item.product.stock %>" style="width: 70px;" readonly>
+                                        <button class="quantity-btn increase-qty" data-product-id="<%= item.product._id %>" data-max="<%= item.product.stock %>">+</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-4 mt-3 mt-md-0 text-end">
+                                    <p class="mb-0 fw-bold item-total">$<%= (item.product.price * item.quantity).toFixed(2) %></p>
+                                </div>
+                                <div class="col-md-1 col-2 mt-3 mt-md-0 text-end">
+                                    <button class="btn btn-sm btn-danger remove-item" data-product-id="<%= item.product._id %>">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow-sm sticky-top" style="top: 20px;">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-receipt"></i> Order Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Subtotal (<span id="totalItems"><%= totalItems %></span> items)</span>
+                        <span id="subtotalAmount">$<%= totalPrice.toFixed(2) %></span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Shipping</span>
+                        <span>$10.00</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Tax (10%)</span>
+                        <span id="taxAmount">$<%= (totalPrice * 0.10).toFixed(2) %></span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between mb-3">
+                        <strong>Total</strong>
+                        <strong class="text-primary fs-5" id="grandTotal">$<%= (totalPrice + 10 + totalPrice * 0.10).toFixed(2) %></strong>
+                    </div>
+                    <a href="/checkout" class="btn btn-primary w-100 btn-lg mb-2">
+                        <i class="bi bi-lock"></i> Proceed to Checkout
+                    </a>
+                    <a href="/products" class="btn btn-outline-secondary w-100">
+                        <i class="bi bi-arrow-left"></i> Continue Shopping
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+<% } else { %>
+    <div class="empty-cart">
+        <div class="text-center">
+            <i class="bi bi-cart-x" style="font-size: 80px; color: #dee2e6;"></i>
+            <h3 class="mt-3">Your cart is empty</h3>
+            <p class="text-muted">Add some products to your cart to see them here</p>
+            <a href="/products" class="btn btn-primary btn-lg mt-3">
+                <i class="bi bi-shop"></i> Start Shopping
+            </a>
+        </div>
+    </div>
+<% } %>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Increase quantity
+    $('.increase-qty').on('click', function() {
+        const productId = $(this).data('product-id');
+        const max = parseInt($(this).data('max'));
+        const $input = $(this).siblings('.quantity-input');
+        const currentQty = parseInt($input.val());
+        
+        if (currentQty < max) {
+            updateQuantity(productId, currentQty + 1);
+        } else {
+            alert('Maximum stock reached');
+        }
+    });
+    
+    // Decrease quantity
+    $('.decrease-qty').on('click', function() {
+        const productId = $(this).data('product-id');
+        const $input = $(this).siblings('.quantity-input');
+        const currentQty = parseInt($input.val());
+        
+        if (currentQty > 1) {
+            updateQuantity(productId, currentQty - 1);
+        }
+    });
+    
+    // Remove item
+    $('.remove-item').on('click', function() {
+        if (confirm('Remove this item from cart?')) {
+            const productId = $(this).data('product-id');
+            removeItem(productId);
+        }
+    });
+    
+    function updateQuantity(productId, quantity) {
+        $.ajax({
+            url: `/cart/update/${productId}`,
+            method: 'POST',
+            data: { quantity },
+            success: function(response) {
+                // Update quantity display
+                $(`.cart-item[data-product-id="${productId}"] .quantity-input`).val(quantity);
+                
+                // Update item total
+                $(`.cart-item[data-product-id="${productId}"] .item-total`).text('$' + response.itemTotal.toFixed(2));
+                
+                // Update summary
+                updateSummary(response.totalPrice, response.totalItems);
+            },
+            error: function(xhr) {
+                alert(xhr.responseJSON?.error || 'Error updating quantity');
+            }
+        });
+    }
+    
+    function removeItem(productId) {
+        $.ajax({
+            url: `/cart/remove/${productId}`,
+            method: 'POST',
+            success: function(response) {
+                // Remove item from DOM
+                $(`.cart-item[data-product-id="${productId}"]`).fadeOut(300, function() {
+                    $(this).remove();
+                    
+                    // Check if cart is empty
+                    if ($('.cart-item').length === 0) {
+                        location.reload();
+                    }
+                });
+                
+                // Update summary
+                updateSummary(response.totalPrice, response.totalItems);
+            },
+            error: function(xhr) {
+                alert(xhr.responseJSON?.error || 'Error removing item');
+            }
+        });
+    }
+    
+    function updateSummary(totalPrice, totalItems) {
+        const shipping = 10.00;
+        const tax = totalPrice * 0.10;
+        const grandTotal = totalPrice + shipping + tax;
+        
+        $('#totalItems').text(totalItems);
+        $('#subtotalAmount').text('$' + totalPrice.toFixed(2));
+        $('#taxAmount').text('$' + tax.toFixed(2));
+        $('#grandTotal').text('$' + grandTotal.toFixed(2));
+    }
+});
+</script>
+
+<%- include('partials/footer') %>
+
