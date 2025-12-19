@@ -1,0 +1,51 @@
+<%- include('../partials/admin-header') %>
+    <h1 class="mb-4"><%= product ? 'Edit Product' : 'Add New Product' %></h1>
+    
+    <div class="card">
+        <div class="card-body">
+            <form action="<%= formAction %>" method="<%= formMethod %>">
+                <input type="hidden" name="_method" value="<%= product ? 'PUT' : 'POST' %>">
+                
+                <div class="mb-3">
+                    <label for="name" class="form-label">Product Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="name" name="name" value="<%= product ? product.name : '' %>" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" id="price" name="price" value="<%= product ? product.price : '' %>" step="0.01" min="0" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="category" name="category" value="<%= product ? product.category : '' %>" required>
+                    <small class="form-text text-muted">Examples: Electronics, Clothing, Books, etc.</small>
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="4"><%= product ? product.description : '' %></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image URL</label>
+                    <input type="url" class="form-control" id="image" name="image" value="<%= product ? product.image : 'https://via.placeholder.com/300' %>">
+                </div>
+
+                <div class="mb-3">
+                    <label for="stock" class="form-label">Stock Quantity</label>
+                    <input type="number" class="form-control" id="stock" name="stock" value="<%= product ? product.stock : 0 %>" min="0">
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle"></i> <%= buttonText %>
+                </button>
+                <a href="/admin/products" class="btn btn-secondary">
+                    <i class="bi bi-x-circle"></i> Cancel
+                </a>
+            </form>
+        </div>
+    </div>
+<%- include('../partials/admin-footer') %>
+
+

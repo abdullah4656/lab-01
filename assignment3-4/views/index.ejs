@@ -1,0 +1,548 @@
+<%- include('partials/header') %>
+<style>
+    /* Enhanced Color Scheme Variables */
+    :root {
+        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --primary-dark: #5a67d8;
+        --secondary-color: #ed8936;
+        --light-bg: #f8f9fa;
+        --dark-bg: #2d3748;
+        --text-dark: #2d3748;
+        --text-light: #718096;
+    }
+
+    /* Hero Section Enhancement */
+    .hero-section {
+        background: var(--primary-gradient);
+        border-radius: 20px;
+        padding: 80px 40px;
+        margin-bottom: 60px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 100%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+        background-size: 50px 50px;
+        opacity: 0.3;
+        animation: float 20s linear infinite;
+    }
+    
+    @keyframes float {
+        0% { transform: translate(0, 0) rotate(0deg); }
+        100% { transform: translate(-50px, -50px) rotate(360deg); }
+    }
+
+    /* Cards Enhancement */
+    .feature-card {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: none;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.07);
+        border-radius: 15px;
+        overflow: hidden;
+        background: white;
+        border-top: 4px solid transparent;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(102, 126, 234, 0.15);
+    }
+    
+    .feature-card:nth-child(1):hover { border-top-color: #667eea; }
+    .feature-card:nth-child(2):hover { border-top-color: #48bb78; }
+    .feature-card:nth-child(3):hover { border-top-color: #ed8936; }
+
+    /* Product Cards */
+    .product-card-home {
+        transition: all 0.4s ease;
+        border: none;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        border-radius: 15px;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .product-card-home::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: var(--primary-gradient);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+    
+    .product-card-home:hover {
+        transform: translateY(-12px);
+        box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+    }
+    
+    .product-card-home:hover::after {
+        transform: scaleX(1);
+    }
+
+    /* New Static Sections */
+    .stats-section {
+        background: linear-gradient(135deg, #f6f9ff 0%, #f0f4ff 100%);
+        border-radius: 20px;
+        padding: 60px 40px;
+        margin: 60px 0;
+    }
+    
+    .stat-item {
+        text-align: center;
+        padding: 20px;
+    }
+    
+    .stat-number {
+        font-size: 3.5rem;
+        font-weight: 800;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        line-height: 1;
+    }
+    
+    .testimonial-section {
+        background: white;
+        border-radius: 20px;
+        padding: 60px 40px;
+        margin: 60px 0;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+    
+    .testimonial-card {
+        background: var(--light-bg);
+        border-radius: 15px;
+        padding: 30px;
+        height: 100%;
+        transition: transform 0.3s ease;
+        border-left: 4px solid #667eea;
+    }
+    
+    .testimonial-card:hover {
+        transform: translateX(10px);
+    }
+    
+    /* Enhanced Footer */
+    .main-footer {
+        background: var(--dark-bg);
+        color: white;
+        padding: 60px 0 20px;
+        margin-top: 80px;
+    }
+    
+    .footer-links a {
+        color: #cbd5e0;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+    
+    .footer-links a:hover {
+        color: white;
+        padding-left: 5px;
+    }
+    
+    .footer-subscribe {
+        background: rgba(255,255,255,0.1);
+        border-radius: 10px;
+        padding: 20px;
+    }
+    
+    .newsletter-input {
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+        color: white;
+    }
+    
+    .newsletter-input::placeholder {
+        color: rgba(255,255,255,0.6);
+    }
+</style>
+
+<!-- Hero Section -->
+<div class="row">
+    <div class="col-12">
+        <div class="hero-section text-white text-center">
+            <div class="position-relative z-1">
+                <h1 class="display-3 fw-bold mb-3">Welcome to E-Commerce Store</h1>
+                <p class="lead mb-4 fs-4">Discover amazing products at unbeatable prices</p>
+                <a class="btn btn-light btn-lg px-5 py-3 fw-bold" href="/products">
+                    <i class="bi bi-shop me-2"></i> Start Shopping
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="row mb-5">
+    <div class="col-md-4 mb-4">
+        <div class="card feature-card h-100">
+            <div class="card-body text-center p-5">
+                <div class="icon-wrapper mb-4">
+                    <i class="bi bi-truck fs-1 text-primary mb-3"></i>
+                </div>
+                <h4 class="card-title fw-bold mb-3">Fast Delivery</h4>
+                <p class="card-text text-muted">Quick and reliable shipping to your doorstep within 2-3 business days</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card feature-card h-100">
+            <div class="card-body text-center p-5">
+                <div class="icon-wrapper mb-4">
+                    <i class="bi bi-shield-check fs-1 text-success mb-3"></i>
+                </div>
+                <h4 class="card-title fw-bold mb-3">Secure Payment</h4>
+                <p class="card-text text-muted">100% secure and encrypted payment processing with SSL protection</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card feature-card h-100">
+            <div class="card-body text-center p-5">
+                <div class="icon-wrapper mb-4">
+                    <i class="bi bi-arrow-repeat fs-1 text-warning mb-3"></i>
+                </div>
+                <h4 class="card-title fw-bold mb-3">Easy Returns</h4>
+                <p class="card-text text-muted">Hassle-free 30-day return policy on all products with free returns</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- New Static Section 1: Statistics -->
+<div class="stats-section">
+    <div class="row text-center">
+        <div class="col-12 mb-5">
+            <h2 class="fw-bold display-5 mb-3">Why Customers Love Us</h2>
+            <p class="text-muted lead">Join thousands of satisfied customers</p>
+        </div>
+        <div class="col-md-3 col-6 mb-4">
+            <div class="stat-item">
+                <div class="stat-number">10K+</div>
+                <p class="text-muted mt-2">Happy Customers</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-6 mb-4">
+            <div class="stat-item">
+                <div class="stat-number">2.5K+</div>
+                <p class="text-muted mt-2">Products Available</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-6 mb-4">
+            <div class="stat-item">
+                <div class="stat-number">24/7</div>
+                <p class="text-muted mt-2">Customer Support</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-6 mb-4">
+            <div class="stat-item">
+                <div class="stat-number">98%</div>
+                <p class="text-muted mt-2">Satisfaction Rate</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Featured Products -->
+<% if (featuredProducts && featuredProducts.length > 0) { %>
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold mb-0">
+                    <i class="bi bi-star-fill text-warning me-2"></i> Featured Products
+                </h2>
+                <span class="badge bg-primary fs-6 px-3 py-2"><%= featuredProducts.length %> Products</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <% featuredProducts.forEach(product => { %>
+            <div class="col-md-4 col-lg-2 mb-4">
+                <div class="card product-card-home h-100">
+                    <div class="position-relative">
+                        <img src="<%= product.image %>" class="card-img-top" alt="<%= product.name %>" 
+                             style="height: 200px; object-fit: cover; width: 100%;">
+                        <% if (product.stock > 0 && product.stock <= 10) { %>
+                            <span class="position-absolute top-0 end-0 bg-warning text-dark px-2 py-1 m-2 rounded">
+                                Only <%= product.stock %> left!
+                            </span>
+                        <% } %>
+                    </div>
+                    <div class="card-body d-flex flex-column p-3">
+                        <h6 class="card-title fw-bold mb-2"><%= product.name %></h6>
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="text-warning small">
+                                <% for(let i=0; i<5; i++) { %>
+                                    <i class="bi bi-star<% if(i<4){ %>-fill<% } %>"></i>
+                                <% } %>
+                            </div>
+                            <small class="text-muted ms-2">(4.0)</small>
+                        </div>
+                        <p class="card-text text-primary fw-bold fs-5 mb-3">$<%= product.price.toFixed(2) %></p>
+                        <div class="mt-auto">
+                            <% if (product.stock > 0) { %>
+                                <button class="btn btn-primary w-100 add-to-cart-btn" 
+                                        data-product-id="<%= product._id %>">
+                                    <i class="bi bi-cart-plus me-2"></i> Add to Cart
+                                </button>
+                            <% } else { %>
+                                <button class="btn btn-secondary w-100" disabled>
+                                    <i class="bi bi-x-circle me-2"></i> Out of Stock
+                                </button>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+    <div class="text-center mt-5">
+        <a href="/products" class="btn btn-primary btn-lg px-5 py-3 fw-bold">
+            View All Products <i class="bi bi-arrow-right ms-2"></i>
+        </a>
+    </div>
+<% } %>
+
+<!-- New Static Section 2: Testimonials -->
+<div class="testimonial-section">
+    <div class="row">
+        <div class="col-12 mb-5 text-center">
+            <h2 class="fw-bold display-5 mb-3">What Our Customers Say</h2>
+            <p class="text-muted lead">Real feedback from real shoppers</p>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="testimonial-card">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-primary rounded-circle p-2 me-3">
+                        <i class="bi bi-person-fill text-white fs-4"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-0">Sarah Johnson</h5>
+                        <small class="text-muted">Verified Buyer</small>
+                    </div>
+                </div>
+                <p class="mb-0">"Amazing quality and fast delivery! The products exceeded my expectations. Will definitely shop again!"</p>
+                <div class="text-warning mt-3">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="testimonial-card">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-primary rounded-circle p-2 me-3">
+                        <i class="bi bi-person-fill text-white fs-4"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-0">Michael Chen</h5>
+                        <small class="text-muted">Verified Buyer</small>
+                    </div>
+                </div>
+                <p class="mb-0">"Best prices online with excellent customer service. The return process was hassle-free!"</p>
+                <div class="text-warning mt-3">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-half"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="testimonial-card">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="bg-primary rounded-circle p-2 me-3">
+                        <i class="bi bi-person-fill text-white fs-4"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold mb-0">Emily Rodriguez</h5>
+                        <small class="text-muted">Verified Buyer</small>
+                    </div>
+                </div>
+                <p class="mb-0">"Fast shipping and great product quality. Customer support was very helpful!"</p>
+                <div class="text-warning mt-3">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Enhanced Footer -->
+<footer class="main-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <h3 class="fw-bold mb-4">
+                    <i class="bi bi-shop me-2"></i>E-Commerce Store
+                </h3>
+                <p class="text-light mb-4">Your one-stop destination for quality products at amazing prices. We're committed to providing the best shopping experience.</p>
+                <div class="d-flex">
+                    <a href="#" class="btn btn-outline-light btn-sm me-2 rounded-circle p-2">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-light btn-sm me-2 rounded-circle p-2">
+                        <i class="bi bi-twitter"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-light btn-sm me-2 rounded-circle p-2">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-light btn-sm rounded-circle p-2">
+                        <i class="bi bi-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-lg-2 col-md-4 mb-4">
+                <h5 class="fw-bold mb-4">Quick Links</h5>
+                <div class="footer-links">
+                    <div class="mb-2"><a href="/">Home</a></div>
+                    <div class="mb-2"><a href="/products">Products</a></div>
+                    <div class="mb-2"><a href="/cart">Shopping Cart</a></div>
+                    <div class="mb-2"><a href="/about">About Us</a></div>
+                    <div class="mb-2"><a href="/contact">Contact</a></div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-4 mb-4">
+                <h5 class="fw-bold mb-4">Customer Service</h5>
+                <div class="footer-links">
+                    <div class="mb-2"><a href="/shipping">Shipping Policy</a></div>
+                    <div class="mb-2"><a href="/returns">Return Policy</a></div>
+                    <div class="mb-2"><a href="/privacy">Privacy Policy</a></div>
+                    <div class="mb-2"><a href="/terms">Terms of Service</a></div>
+                    <div class="mb-2"><a href="/faq">FAQ</a></div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-4 mb-4">
+                <div class="footer-subscribe">
+                    <h5 class="fw-bold mb-3">Stay Updated</h5>
+                    <p class="small text-light mb-3">Subscribe to our newsletter for exclusive deals!</p>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control newsletter-input" placeholder="Your email">
+                        <button class="btn btn-primary" type="button">
+                            <i class="bi bi-envelope-arrow-up"></i>
+                        </button>
+                    </div>
+                    <div class="mt-4">
+                        <p class="small text-light mb-2">
+                            <i class="bi bi-telephone me-2"></i> (123) 456-7890
+                        </p>
+                        <p class="small text-light">
+                            <i class="bi bi-envelope me-2"></i> support@ecommerce.com
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <hr class="my-4" style="border-color: rgba(255,255,255,0.1);">
+        
+        <div class="row">
+            <div class="col-md-6">
+                <p class="small text-light mb-0">
+                    &copy; <%= new Date().getFullYear() %> E-Commerce Store. All rights reserved.
+                </p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <div class="d-flex justify-content-md-end">
+                    <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/cc-badges-ppmcvdam.png" 
+                         alt="PayPal" height="40" class="me-2">
+                    <img src="https://cdn.worldvectorlogo.com/logos/visa-2.svg" alt="Visa" height="30" class="me-2">
+                    <img src="https://cdn.worldvectorlogo.com/logos/mastercard-2.svg" alt="Mastercard" height="30">
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('.add-to-cart-btn').on('click', function() {
+        const btn = $(this);
+        const productId = btn.data('product-id');
+        const originalText = btn.html();
+        
+        btn.prop('disabled', true).html('<i class="bi bi-hourglass-split me-2"></i> Adding...');
+        
+        $.ajax({
+            url: `/cart/add/${productId}`,
+            method: 'POST',
+            data: { quantity: 1 },
+            success: function(response) {
+                btn.html('<i class="bi bi-check-circle me-2"></i> Added!').removeClass('btn-primary').addClass('btn-success');
+                
+                setTimeout(function() {
+                    btn.html('<i class="bi bi-cart-plus me-2"></i> Add to Cart').removeClass('btn-success').addClass('btn-primary').prop('disabled', false);
+                }, 2000);
+                
+                showToast('Product added to cart successfully!');
+            },
+            error: function(xhr) {
+                btn.html(originalText).prop('disabled', false);
+                showToast(xhr.responseJSON?.error || 'Error adding to cart', 'error');
+            }
+        });
+    });
+    
+    function showToast(message, type = 'success') {
+        const bgColor = type === 'success' ? 'bg-success' : 'bg-danger';
+        
+        const toast = $(`
+            <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1055">
+                <div class="toast show ${bgColor} text-white" role="alert">
+                    <div class="toast-header ${bgColor} text-white border-0">
+                        <i class="bi ${type === 'success' ? 'bi-check-circle' : 'bi-exclamation-circle'} me-2"></i>
+                        <strong class="me-auto">${type === 'success' ? 'Success' : 'Error'}</strong>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+                    </div>
+                    <div class="toast-body d-flex align-items-center justify-content-between">
+                        <span>${message}</span>
+                        ${type === 'success' ? '<a href="/cart" class="btn btn-sm btn-outline-light ms-3">View Cart</a>' : ''}
+                    </div>
+                </div>
+            </div>
+        `);
+        
+        $('body').append(toast);
+        setTimeout(function() {
+            toast.fadeOut(500, function() {
+                $(this).remove();
+            });
+        }, 3000);
+    }
+    
+    // Newsletter subscription
+    $('.footer-subscribe button').on('click', function() {
+        const email = $(this).siblings('input').val();
+        if (email && email.includes('@')) {
+            showToast('Successfully subscribed to newsletter!');
+            $(this).siblings('input').val('');
+        } else {
+            showToast('Please enter a valid email address', 'error');
+        }
+    });
+});
+</script>

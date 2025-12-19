@@ -36,6 +36,31 @@ app.use('/cart', cartRouter);
 app.use('/checkout', checkoutRouter);
 app.use('/admin', adminRouter);
 
+// Error handling middleware
+// This middleware catches all errors from async route handlers
+// Middleware is preferred over repeated try-catch blocks because:
+// 1. Centralized error handling - one place to manage all errors
+// 2. DRY principle - don't repeat error handling code in every route
+// 3. Consistent error responses across the application
+// 4. Easier to maintain and update error handling logic
+app.use((err, req, res, next) => {
+    console.error('Error:', err);
+    
+    // Handle different error types
+    if (err.name === 'ValidationError') {
+        return res.status(400).json({ error: err.message });
+    }
+    
+    if (err.name === 'CastError') {
+        return res.status(400).json({ error: 'Invalid ID format' });
+    }
+    
+    // Default error response
+    res.status(err.status || 500).json({ 
+        error: err.message || 'Internal server error' 
+    });
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);

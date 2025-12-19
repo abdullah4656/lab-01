@@ -1,0 +1,92 @@
+<%- include('partials/header') %>
+    <div class="row">
+        <div class="col-md-6">
+            <img src="<%= product.image %>" class="img-fluid rounded" alt="<%= product.name %>">
+        </div>
+        <div class="col-md-6">
+            <h1><%= product.name %></h1>
+            <p class="text-muted">Category: <%= product.category %></p>
+            <h3 class="text-primary">$<%= product.price.toFixed(2) %></h3>
+            <hr>
+            <h5>Description</h5>
+            <p><%= product.description || 'No description available' %></p>
+            <p><strong>Stock:</strong> <%= product.stock %> available</p>
+            
+            <% if (product.stock > 0) { %>
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Quantity:</label>
+                    <input type="number" id="quantity" class="form-control" value="1" min="1" max="<%= product.stock %>" style="width: 100px;">
+                </div>
+                <button class="btn btn-primary btn-lg" id="addToCartBtn" data-product-id="<%= product._id %>">
+                    <i class="bi bi-cart-plus"></i> Add to Cart
+                </button>
+                <a href="/products" class="btn btn-outline-secondary btn-lg">
+                    <i class="bi bi-arrow-left"></i> Back to Products
+                </a>
+            <% } else { %>
+                <button class="btn btn-secondary btn-lg" disabled>Out of Stock</button>
+                <a href="/products" class="btn btn-outline-secondary btn-lg">Back to Products</a>
+            <% } %>
+        </div>
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#addToCartBtn').on('click', function() {
+        const btn = $(this);
+        const productId = btn.data('product-id');
+        const quantity = parseInt($('#quantity').val());
+        const originalText = btn.html();
+        
+        btn.prop('disabled', true).html('<i class="bi bi-hourglass-split"></i> Adding...');
+        
+        $.ajax({
+            url: `/cart/add/${productId}`,
+            method: 'POST',
+            data: { quantity },
+            success: function(response) {
+                btn.html('<i class="bi bi-check-circle"></i> Added to Cart!').removeClass('btn-primary').addClass('btn-success');
+                
+                // Show modal with options
+                const modal = $(`
+                    <div class="modal fade" id="cartModal" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header bg-success text-white">
+                                    <h5 class="modal-title"><i class="bi bi-check-circle"></i> Added to Cart</h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    <p class="mb-4">Product successfully added to your cart!</p>
+                                    <a href="/cart" class="btn btn-primary btn-lg me-2">
+                                        <i class="bi bi-cart"></i> View Cart
+                                    </a>
+                                    <a href="/products" class="btn btn-outline-secondary btn-lg">
+                                        <i class="bi bi-shop"></i> Continue Shopping
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `);
+                
+                $('body').append(modal);
+                $('#cartModal').modal('show');
+                $('#cartModal').on('hidden.bs.modal', function() {
+                    $(this).remove();
+                    btn.html(originalText).removeClass('btn-success').addClass('btn-primary').prop('disabled', false);
+                });
+            },
+            error: function(xhr) {
+                btn.html(originalText).prop('disabled', false);
+                alert(xhr.responseJSON?.error || 'Error adding to cart');
+            }
+        });
+    });
+});
+</script>
+
+<%- include('partials/footer') %>
+
+

@@ -1,0 +1,71 @@
+<%- include('../partials/admin-header') %>
+    <h1 class="mb-4">Dashboard</h1>
+    
+    <div class="mb-4">
+        <a href="/admin/orders?email=admin@shop.com" class="btn btn-primary">
+            <i class="bi bi-bag-check"></i> View Orders
+        </a>
+        <a href="/admin/products" class="btn btn-secondary">
+            <i class="bi bi-box"></i> Manage Products
+        </a>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-md-6 mb-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-box"></i> Total Products</h5>
+                    <h2 class="card-text"><%= totalProducts %></h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-tags"></i> Total Categories</h5>
+                    <h2 class="card-text"><%= totalCategories %></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Low Stock Products</h5>
+        </div>
+        <div class="card-body">
+            <% if (lowStockProducts.length > 0) { %>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Stock</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% lowStockProducts.forEach(product => { %>
+                            <tr>
+                                <td><%= product.name %></td>
+                                <td><%= product.category %></td>
+                                <td class="text-danger"><%= product.stock %></td>
+                                <td>$<%= product.price.toFixed(2) %></td>
+                                <td>
+                                    <a href="/admin/products/<%= product._id %>/edit" class="btn btn-sm btn-warning">
+                                        <i class="bi bi-pencil"></i> Edit
+                                    </a>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <p class="text-muted">No products with low stock.</p>
+            <% } %>
+        </div>
+    </div>
+<%- include('../partials/admin-footer') %>
+
+
